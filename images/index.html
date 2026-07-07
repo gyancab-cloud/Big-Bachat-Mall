@@ -1,0 +1,670 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big Bachat Mall | Elegant Home Decor | Show Pieces</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+renderCart();
+</script>
+<style>
+
+body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+
+      .logo {
+       width: 120px;
+       display: block;
+       margin: 0 auto 10px auto;
+    }
+      header {
+      background: #2c2c2c;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    header p {
+      margin-top: 8px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 30px auto;
+    }
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+ .card:hover {
+      transform: translateY(-4px);
+    }
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card-content h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+    }
+    .details {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .price {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #1a7f37;
+    }
+    .rating {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #f4b400;
+    }
+    .rating span {
+      color: #777;
+      font-size: 13px;
+    }
+
+.main-img{
+width:100%;
+height:200px;
+object-fit:cover;
+transition:0.4s;
+cursor:pointer;
+}
+.main-img:hover{transform:scale(2)}
+
+.thumbs img{
+width:50px;height:50px;margin:4px;cursor:pointer;
+border:2px solid transparent;
+}
+.thumbs img:hover{border-color:blue}
+
+button{
+padding:8px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+color:#fff;
+margin-top:5px;
+width:100%;
+}
+
+.add{background:green}
+.remove{background:red}
+.checkoutBtn{background:orange}
+.cod{background:#4CAF50;}
+.upi{background:#2196F3;}
+.wa{background:#25D366;}
+.cancelBtn{background:#f44336;}
+
+#cartBox{
+position:fixed;
+top:10px;
+right:10px;
+background:#fff;
+padding:10px;
+width:260px;
+box-shadow:0 0 10px #000;
+z-index:999;
+}
+
+.category-menu a{
+  margin:0 15px;
+  text-decoration:none;
+  color:#4a6cf7;
+  font-weight:bold;
+  cursor:pointer;
+}
+.category-menu a:hover{
+  text-decoration:underline;
+}
+
+.coming-soon {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.coming-soon h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.coming-soon p {
+  font-size: 20px;
+  color: gray;
+}
+
+.logo-inline {
+  width: 40px;        /* adjust size if needed */
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.popupWrap{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.popup{
+background:#fff;
+padding:15px;
+border-radius:10px;
+width:320px;
+position:relative;
+}
+
+.closeBtn{
+position:absolute;
+top:5px;
+right:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+footer{
+background:#222;
+color:#fff;
+padding:15px;
+text-align:center;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>
+  <img src="images/logo.jpeg" alt="Logo" class="logo-inline"> BIG BACHAT MALL | <i>beyond your expectations</i> </h1>
+  <h2>Elegant Home Decor</h2> 
+  <p>Premium Home Decor Show Pieces | Simple • Beautiful • Professional</p>
+</header>
+
+<!-- CATEGORY MENU -->
+<div class="category-menu">
+  <a href="#" onclick="showCategory('home')">Home Decor</a>
+  <a href="#" onclick="showCategory('clothing')">Clothing</a>
+  <a href="#" onclick="showCategory('furniture')">Furniture</a>
+  <a href="#" onclick="showPolicy()">Return Policy</a>
+</div>
+
+<div class="products" id="products"></div>
+<div id="cartBox"></div>
+
+<!-- CHECKOUT -->
+<div class="popupWrap" id="checkoutPopup">
+<div class="popup">
+<span class="closeBtn" onclick="closeCheckout()">X</span>
+
+<h3>Checkout</h3>
+<input id="custName" placeholder="Name"><br><br>
+<textarea id="custAddress" placeholder="Address"></textarea>
+
+<div id="summary"></div>
+
+<button class="cod" onclick="payCOD()">COD</button>
+<button class="upi" onclick="payUPI()">UPI</button>
+<button class="wa" onclick="orderWhatsApp()">WhatsApp</button>
+<button class="cancelBtn" onclick="cancelOrder()">Cancel</button>
+
+</div>
+</div>
+
+<!-- QR -->
+<div class="popupWrap" id="qrPopup">
+<div class="popup">
+<span class="closeBtn" onclick="closeQR()">X</span>
+<h3>Scan & Pay</h3>
+<div id="qrcode"></div>
+</div>
+</div>
+
+<!-- CLOTHING SECTION -->
+<section id="clothing" style="display:none;">
+  <div class="coming-soon">
+    <h2>👕 Clothing Section</h2>
+    <p>🚧 Coming Soon...</p>
+  </div>
+</section>
+
+<!-- FURNITURE SECTION -->
+<section id="furniture" style="display:none;">
+  <div class="coming-soon">
+    <h2>🛋️ Furniture Section</h2>
+    <p>🚧 Coming Soon...</p>
+  </div>
+</section>
+
+
+</div>
+</div>
+
+<script>
+
+/* PRODUCTS */
+const products = [
+{name:"Monk Set", price:999, oldPrice:1299, size:"12 inch", rating:4.5, height:1, images:["images/Monkset0.png","images/Monkset.jpg"]},
+
+{name:"Seven Horses", price:999, oldPrice:1299, size:"12 inch", rating:4.4,height:2,images:["images/Severn horses.jpg","images/seven hourse 2.png"]},
+
+{name:"Leopard",price:1799,oldPrice:3500,size:"18 inch",rating:4.5,height:3,images:["images/tiger.jpg"]},
+
+{name:"Single Horse",price:1399,oldPrice:2650,size:"18 inch",rating:4.3,height:2,images:["images/Horses.png","images/horses1.png"]},
+
+{name:"Antique Family",price:799,oldPrice:1750,rating:4.2,height:1,images:["images/family antique.png"]},
+
+{name:"Elephant Family",price:999,oldPrice:2200,rating:4.2,height:2,images:["images/Elephant Family.png"]},
+
+{name:"Owl Set",price:1199,oldPrice:2530,rating:4.3,height:1,images:["images/Antique Owl Set.png"]},
+
+{name:"Buddha",price:1199,oldPrice:2500,size:"18 inch",rating:4.4,height:2,images:["images/budha.png","images/3 budha.png"]},
+
+{name:"Figures Set",price:1799,oldPrice:3550,rating:4.2,height:2,images:["images/Antique Figures Set.png"]},
+
+{name:"Couple Horse",price:999,oldPrice:2150,rating:4.4,height:1,images:["images/Couple House.png"]},
+
+{name:"Three Monkey",price:1199,oldPrice:2600,rating:4.2,height:1,images:["images/Three Monkey Set.png"]},
+
+{name:"Double Faces",price:999,oldPrice:2130,rating:4.3,height:1,images:["images/Double Faces.png"]},
+
+{name:"Leopard Small",price:899,oldPrice:2150,rating:4.2,height:1,images:["images/leopard.jpg"]},
+
+{name:"Golden Elephant",price:1199,oldPrice:2300,rating:4.4,height:2,images:["images/Golden Elephants.jpg"]},
+
+{name:"Bulldog",price:699,oldPrice:1435,rating:4.4,height:1,images:["images/Anqiture bulldog.png","images/Anqiture bulldog.jpg"]},
+
+{name:"Deer",price:999,oldPrice:2200,rating:4.3,height:2,images:["images/Antique Dear.png"]},
+
+{name:"Yoga Girls",price:1199,oldPrice:2550,rating:4.5,height:1,images:["images/Yoga Girls.png"]},
+
+{name:"Premium Figures",price:1499,oldPrice:3150,rating:4.5,height:2,images:["images/Three Figures.png"]},
+
+{name:"Three Face",price:999,oldPrice:2130,rating:4.2,height:1,images:["images/three face figures.png"]},
+
+{name:"Big Buddha",price:7999,oldPrice:21500,size:"3 feet",rating:4.5,height:3,images:["images/3 budha.png"]},
+
+{name:"Angles Set",price:2499,oldPrice:3525,rating:4.4,height:2,images:["images/3 Angle pink.png"]},
+
+{name:"Small Angles",price:1599,oldPrice:3199,rating:4.4,height:1,images:["images/three Angle.png"]},
+
+{name:"Black Dog",price:2199,oldPrice:3450,rating:4.5,height:2,images:["images/Antique Dog.png"]},
+
+{name:"Little Dog",price:799,oldPrice:2200,rating:4.4,height:1,images:["images/little dog.png","images/little dog1.jpg"]},
+
+{name:"African Lady",price:1399,oldPrice:2750,rating:4.3,height:2,images:["images/black beauty.jpg"]},
+
+{name:"different Faces set",price:1750,oldPrice:3250,size:"13 inch",rating:4.3,height:2,images:["images/different Faces set.jpg"]},
+
+{name:"Elegant Cat set",price:999,oldPrice:2250,size:"13 inch",rating:4.4,height:2,images:["images/Elegant Cat set.jpg"]},
+
+{name:"Beautiful Rabbits Set",price:1399,oldPrice:2999,size:"10x12 inch",rating:4.4,height:2,images:["images/Beautiful Rabbits Set.jpg","images/Beautiful Rabbits Set1.jpg"]},
+
+{name:"budha meditation",price:599,oldPrice:1350,size:"27x10 CM",rating:4.2,height:2,images:["images/budha meditation.jpg"]},
+
+{name:"Affrican Beauty Set",price:1399,oldPrice:2750,size:"12 inch",rating:4.2,height:2,images:["images/Affrican Beauty Set1.jpg","images/Affrican Beauty Set.jpg"]},
+
+{name:"Affrican Lady",price:650,oldPrice:1300,size:" inch",rating:4.3,height:2,images:["images/Affrican Lady.jpg","images/Affrican Lady1.jpg"]},
+
+{name:"Elegant Faces set",price:1650,oldPrice:3299,size:"16 inch",rating:4.4,height:2,images:["images/Elegant Faces set.jpg"]},
+
+{name:"Elegant Monk Set",price:1699,oldPrice:3500,size:"10x12x16 inch",rating:4.4,height:2,images:["images/Elegant Monk Set.jpg"]},
+
+{name:"Elegant Orchestra set",price:1599,oldPrice:3250,size:"12 inch",rating:4.4,height:2,images:["images/Elegant Orchestra set.jpg"]},
+
+{name:"Unique Orchestra Set",price:1799,oldPrice:3550,size:"13 inch",rating:4.3,height:2,images:["images/Unique Orchestra Set.jpg"]},
+
+{name:"Fakir Set",price:1200,oldPrice:2499,size:"6x7x8 inch",rating:4.3,height:2,images:["images/Fakir Set.jpg"]},
+
+{name:"Ganpati standingt",price:850,oldPrice:2200,size:"13 inch",rating:4.4,height:2,images:["images/Ganpati standing.jpg"]},
+
+{name:"Premium Figure Set",price:1299,oldPrice:2499,size:"4 peice set",rating:4.5,height:2,images:["images/Premium Figure Set.jpg"]},
+
+{name:"Premium Lady Set",price:1099,oldPrice:2200,size:"10 inch",rating:4.4,height:2,images:["images/Premium Lady Set.png"]},
+
+{name:"Beauties Set",price:1299,oldPrice:2499,size:"4 peice set",rating:4.5,height:2,images:["images/Premium beauty Set1.jpg","images/Premium beauty Set.jpg"]},
+
+{name:"small ganpati",price:550,oldPrice:1550,size:"small",rating:4.4,height:2,images:["images/small ganpati.jpg"]},
+
+{name:"small monk",price:499,oldPrice:1150,size:"small",rating:4.4,height:2,images:["images/small monk.jpg"]},
+
+{name:"Meditation monk",price:599,oldPrice:1299,size:"small",rating:4.4,height:2,images:["images/small monk1.jpg"]},
+
+];
+
+
+/* LOAD */
+const container=document.getElementById("products");
+
+function renderProducts(category="home"){
+
+container.innerHTML="";
+
+products.forEach((p,i)=>{
+
+// Only show home category products for now
+if(category!=="home") return;
+
+container.innerHTML+=`
+<div class="card">
+
+<img id="img${i}" src="${p.images[0]}" class="main-img">
+
+<div class="thumbs">
+${p.images.map(img=>`<img src="${img}" onclick="changeImg('${img}','img${i}')">`).join("")}
+</div>
+
+<div class="card-content">
+
+<h3>${p.name}</h3>
+
+<div class="details">
+${p.size ? "Size: "+p.size+"<br>" : ""}
+</div>
+
+<div class="rating">
+${p.rating ? "⭐".repeat(Math.floor(p.rating))+" ("+p.rating+")" : ""}
+</div>
+
+<div class="price">
+₹${p.price}
+${p.oldPrice ? `<span style="text-decoration:line-through;color:#888;font-size:13px;margin-left:8px;">₹${p.oldPrice}</span>` : ""}
+</div>
+
+Qty <input type="number" value="1" min="1" class="qty">
+
+<button class="add" onclick="addToCart(${i},this)">Add</button>
+
+</div>
+</div>
+`;
+});
+}
+
+// FIRST LOAD
+renderProducts();
+
+/* CART */
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+let lastOrder=JSON.parse(localStorage.getItem("lastOrder"))||[];
+let orderTime=localStorage.getItem("orderTime")?new Date(localStorage.getItem("orderTime")):null;
+
+function saveData(){
+localStorage.setItem("cart",JSON.stringify(cart));
+localStorage.setItem("lastOrder",JSON.stringify(lastOrder));
+if(orderTime){localStorage.setItem("orderTime",orderTime);}
+else{localStorage.removeItem("orderTime");}
+}
+
+function cleanText(t){
+return String(t).trim().replace(/[<>]/g,'');
+}
+
+function addToCart(i,btn){
+let qty=parseInt(btn.parentElement.querySelector(".qty").value); if(isNaN(qty)||qty<1) qty=1;
+let item=cart.find(x=>x.name===products[i].name);
+
+if(item){item.qty+=qty}
+else{cart.push({...products[i],qty})}
+
+saveData();
+renderCart();
+}
+
+function renderCart(){
+
+let box=document.getElementById("cartBox");
+
+if(cart.length==0){
+box.innerHTML="";
+return;
+}
+
+let sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+let ship=calcShip();
+let total=sub+ship;
+
+box.innerHTML=`
+<h4>Cart</h4>
+${cart.map((i,index)=>`
+${i.name}<br>
+<button onclick="qty(${index},-1)">-</button>
+${i.qty}
+<button onclick="qty(${index},1)">+</button>
+₹${i.price*i.qty}
+<button onclick="remove(${index})" class="remove">X</button>
+<hr>
+`).join("")}
+
+Subtotal: ₹${sub}<br>
+Delivery: ₹${ship}<br>
+<b>Total: ₹${total}</b><br><br>
+
+<button class="checkoutBtn" onclick="openCheckout()">Checkout</button>
+`;
+}
+
+function qty(i,d){
+cart[i].qty+=d;
+if(cart[i].qty<=0)cart.splice(i,1);
+saveData();
+renderCart();
+}
+
+function remove(i){
+cart.splice(i,1);
+saveData();
+renderCart();
+}
+
+function calcShip(){
+let c=0;
+cart.forEach(i=>{
+c+=((i.height>=2)?200:100)*i.qty;
+});
+return c;
+}
+
+/* CHECKOUT */
+function openCheckout(){
+
+if(cart.length===0){
+alert("Cart empty");
+return;
+}
+
+let sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+let ship=calcShip();
+let total=sub+ship;
+
+document.getElementById("summary").innerHTML=`
+<h4>Order Summary</h4>
+${cart.map(i=>`${i.name} x ${i.qty} = ₹${i.price*i.qty}`).join("<br>")}
+<hr>
+Subtotal: ₹${sub}<br>
+Delivery: ₹${ship}<br>
+<b>Total: ₹${total}</b>
+`;
+
+document.getElementById("checkoutPopup").style.display="flex";
+}
+
+function closeCheckout(){
+document.getElementById("checkoutPopup").style.display="none";
+}
+
+/* PAYMENT */
+function payCOD(){
+
+let name=cleanText(document.getElementById("custName").value);
+let address=cleanText(document.getElementById("custAddress").value);
+
+if(!name || !address){
+alert("Fill details");
+return;
+}
+
+lastOrder=[...cart];
+orderTime=new Date();
+saveData();
+
+alert("COD Order Placed ✅ Delivery in 7 days");
+
+cart=[];
+document.getElementById("custName").value="";
+document.getElementById("custAddress").value="";
+saveData();
+renderCart();
+closeCheckout();
+}
+
+function payUPI(){
+
+let name=cleanText(document.getElementById("custName").value);
+let address=cleanText(document.getElementById("custAddress").value);
+
+if(!name || !address){
+alert("Fill details");
+return;
+}
+
+let total=cart.reduce((s,i)=>s+i.price*i.qty,0)+calcShip();
+
+let url=`upi://pay?pa=gagkaithwas@okicici&pn=BachatMall&am=${total}&cu=INR`;
+
+if(/Android|iPhone/i.test(navigator.userAgent)){
+window.location.href=url;
+}else{
+document.getElementById("qrPopup").style.display="flex";
+document.getElementById("qrcode").innerHTML="";
+new QRCode(document.getElementById("qrcode"),{text:url,width:200,height:200});
+}
+}
+
+function orderWhatsApp(){
+
+let name=cleanText(document.getElementById("custName").value);
+let address=cleanText(document.getElementById("custAddress").value);
+
+if(!name || !address){
+alert("Fill details");
+return;
+}
+
+let sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+let ship=calcShip();
+let total=sub+ship;
+
+let msg="🛒 ORDER DETAILS\n\n";
+
+cart.forEach(i=>{
+msg+=`${i.name} x ${i.qty} = ₹${i.price*i.qty}\n`;
+});
+
+msg+=`\n💰 Total: ₹${total}`;
+msg+=`\n👤 Name: ${name}`;
+msg+=`\n📍 Address: ${address}`;
+
+window.open(`https://wa.me/919911787073?text=${encodeURIComponent(msg)}`);
+}
+
+/* CANCEL */
+function cancelOrder(){
+
+if(!orderTime){
+alert("No order");
+return;
+}
+
+let diff=(new Date()-orderTime)/(1000*60*60*24);
+
+if(diff<=3){
+alert("Order Cancelled ✅");
+
+cart=[...lastOrder];
+renderCart();
+
+orderTime=null;
+saveData();
+}else{
+alert("Cancel time expired");
+}
+}
+
+function closeQR(){
+document.getElementById("qrPopup").style.display="none";
+}
+
+function changeImg(src,id){
+document.getElementById(id).src=src;
+}
+
+/* CATEGORY */
+function showCategory(id){
+
+// hide sections
+document.getElementById("products").style.display="none";
+document.getElementById("clothing").style.display="none";
+document.getElementById("furniture").style.display="none";
+
+// show selected
+if(id==="home"){
+document.getElementById("products").style.display="grid";
+renderProducts("home");
+}
+else{
+document.getElementById(id).style.display="block";
+}
+}
+/* RETURN POLICY */
+function showPolicy(){
+  alert(
+    "🛍️ 3 Days Easy Return Policy\n\n" +
+    "• Product must be unused and in original condition.\n" +
+    "• Original packaging, tags, and invoice are mandatory.\n" +
+    "• Return request must be raised within 3 days of delivery.\n" +
+    "• Refund processed after quality check.\n" +
+    "• Shipping charges are non-refundable.\n\n" +
+    "For assistance contact support."
+  );
+}
+
+</script>
+
+<footer>
+  © 2026 Big Bachat Mall | Elegant Home Decor | Orders via WhatsApp: 9911787073 | Contact us : 9911787073 and 9212869239 (for Assistant)
+</footer>
+
+</body>
+</html>
